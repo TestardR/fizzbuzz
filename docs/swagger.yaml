@@ -1,0 +1,137 @@
+definitions:
+  Error:
+    properties:
+      message:
+        type: string
+    type: object
+  Health:
+    properties:
+      status:
+        type: boolean
+    type: object
+  ResponseError:
+    properties:
+      errors:
+        items:
+          $ref: '#/definitions/Error'
+        type: array
+    type: object
+  ResponseSuccess:
+    properties:
+      data: {}
+    type: object
+host: localhost:3000
+info:
+  contact:
+    email: romain.rtestard@gmail.com
+    name: Romain Testard
+  description: This is a fizzbuz server with a statistic endpoint
+  title: Fizzbuzz Rest Server
+  version: "1.0"
+paths:
+  /fizzbuzz:
+    get:
+      description: Fizzbuzz operation
+      parameters:
+      - description: int1 query parameter
+        in: query
+        name: int1
+        required: true
+        type: integer
+      - description: int2 query parameter
+        in: query
+        name: int2
+        required: true
+        type: integer
+      - description: limit query parameter
+        in: query
+        name: limit
+        required: true
+        type: integer
+      - description: str1 query parameter
+        in: query
+        name: str1
+        required: true
+        type: string
+      - description: str2 query parameter
+        in: query
+        name: str2
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/ResponseSuccess'
+            - properties:
+                data:
+                  items:
+                    type: string
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ResponseError'
+      summary: Return fizzbuzz result
+      tags:
+      - Fizzbuzz Operation
+  /health:
+    get:
+      consumes:
+      - application/json
+      description: Healthcheck endpoint, to ensure that the service is running.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/Health'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ResponseError'
+      summary: Health check
+      tags:
+      - Health
+  /stats:
+    delete:
+      description: Reset all statistics regarding the queries made in the past
+      responses:
+        "200":
+          description: ""
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ResponseError'
+      summary: Reset statistics
+      tags:
+      - Statistic
+    get:
+      description: Returns the query that was performed the most and also the number
+        of times
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ResponseSuccess'
+        "204":
+          description: ""
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ResponseError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ResponseError'
+      summary: Retrieve statistic regarding fizzbuzz request
+      tags:
+      - Statistic
+swagger: "2.0"
