@@ -1,0 +1,32 @@
+version: '3.4'
+services:
+    fizzbuzz:
+        build:
+            dockerfile: ${D_PATH:-Dockerfile}
+            context: .
+        depends_on:
+            - redis
+        links:
+            - redis
+        ports:
+            - 3000:3000
+        environment:
+            # App config
+            - PORT=3000
+            - ENV=debug
+            # Redis config
+            - REDIS_HOST=redis
+            - REDIS_PORT=6379
+        volumes:
+            - ./:/go/src
+
+    redis:
+        container_name: redis
+        image: redis
+        environment:
+            - ALLOW_EMPTY_PASSWORD=yes
+        ports:
+            - 6379:6379
+        volumes:
+            - ${HOME}/.data/redis:/data
+        entrypoint: redis-server --appendonly yes

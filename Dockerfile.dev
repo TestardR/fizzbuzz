@@ -1,0 +1,18 @@
+FROM golang:1.17 as deps
+
+WORKDIR /go/src
+
+RUN go install github.com/cespare/reflex@latest
+
+FROM deps as app
+
+COPY cmd cm
+COPY config config
+COPY internal internal
+COPY pkg pkg
+COPY docs docs
+
+COPY go.mod ./
+COPY go.sum ./
+
+ENTRYPOINT reflex -s -r '\.go$' go run cmd/fizzbuzz/fizzbuzz.go --decoration=none
