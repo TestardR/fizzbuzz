@@ -57,8 +57,6 @@ Part of the business requirements involves computing the most frequent request. 
 - `./internal` holds application specific logic, which follows the Onion architecture,
 - `./pkg` holds generic logic that could be externalized in a common library repository.
 
-![architecture](./onion-architecture.png)
-
 The implementation follows the Onion architecture principles. It is based on the inversion of control principle. [The application is decoupled in layers](https://www.codeguru.com/csharp/understanding-onion-architecture/). In our case, as the application is pretty simple, the architecture follows the following layer: `Handler => Storage => Domain`. Layers are connected through interfaces which makes testing easier. Furthermore all external dependencies are represented in external layers. It is a flexible, sustainable, and portable architecture. 
 
 ### Testing Strategy
