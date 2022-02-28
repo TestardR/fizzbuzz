@@ -1,7 +1,6 @@
 package main
 
 import (
-	"errors"
 	"fmt"
 
 	"github.com/TestardR/fizz-buzz/config"
@@ -10,9 +9,7 @@ import (
 	"github.com/TestardR/fizz-buzz/pkg/logger"
 )
 
-const appName = "fizz-buzz"
-
-var errStoreInstance = errors.New("failed to instantiate storage")
+const appName = "fizzbuzz"
 
 func main() {
 	log := logger.NewLogger(appName)
@@ -22,9 +19,9 @@ func main() {
 		log.Fatal(err)
 	}
 
-	store, err := redis.NewStorage(c.RedisHost, c.RedisPort)
+	store, err := redis.New(c.RedisHost, c.RedisPort)
 	if err != nil {
-		log.Fatal(fmt.Errorf("%w: %s", errStoreInstance, err))
+		log.Fatal(fmt.Errorf("failed to instantiate storage: %w", err))
 	}
 
 	s := http.NewServer(c.Env, log, store)

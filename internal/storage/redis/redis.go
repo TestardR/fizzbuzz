@@ -39,8 +39,8 @@ type Storage struct {
 	client *redis.Client
 }
 
-// NewStorage creates a Storage instance.
-func NewStorage(host, port string) (Storager, error) {
+// New creates a Storage instance.
+func New(host, port string) (Storager, error) {
 	opt, err := redis.ParseURL(fmt.Sprintf("redis://%s:%s", host, port))
 	if err != nil {
 		return nil, err

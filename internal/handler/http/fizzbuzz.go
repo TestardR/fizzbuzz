@@ -32,7 +32,9 @@ func (h *handler) GetFizzbuzz(c *gin.Context) {
 	var input domain.Fizzbuzz
 
 	if err := c.ShouldBindQuery(&input); err != nil {
-		c.JSON(http.StatusBadRequest, newResponseError(fmt.Errorf("%w: %s", errInvalidQuery, err)))
+		err = fmt.Errorf("%w: %s", errInvalidQuery, err)
+		h.log.Error(err)
+		c.JSON(http.StatusBadRequest, newResponseError(err))
 
 		return
 	}
@@ -40,7 +42,9 @@ func (h *handler) GetFizzbuzz(c *gin.Context) {
 	h.log.Info(fmt.Sprintf("request received with payload: %v", input))
 
 	if err := validator.New().Struct(&input); err != nil {
-		c.JSON(http.StatusBadRequest, newResponseError(fmt.Errorf("%w: %s", errInvalidQuery, err)))
+		err = fmt.Errorf("%w: %s", errInvalidQuery, err)
+		h.log.Error(err)
+		c.JSON(http.StatusBadRequest, newResponseError(err))
 
 		return
 	}

@@ -1,6 +1,7 @@
 package http
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -22,6 +23,7 @@ type HealthResp struct {
 // @Router /health [get].
 func (h *handler) Health(c *gin.Context) {
 	if err := h.store.Health(c.Request.Context()); err != nil {
+		err = fmt.Errorf("%w: %s", errStorage, err)
 		h.log.Error(err)
 		c.JSON(http.StatusInternalServerError, err)
 

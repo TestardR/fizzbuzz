@@ -29,34 +29,34 @@ func teardown() {
 	mock.Close()
 }
 
-func Test_NewStorage(t *testing.T) {
+func Test_New(t *testing.T) {
 	t.Run("should_return_err_if_redis.ParseUrl_fails", func(t *testing.T) {
 		setup()
 		defer teardown()
 
-		_, err := NewStorage("foo", "bar")
+		_, err := New("foo", "bar")
 
 		assert.Error(t, err)
 	})
 
-	/* 	t.Run("should_return_default_maxKey_and_maxHits_value", func(t *testing.T) {
-	   		setup()
-	   		defer teardown()
+	t.Run("should_return_default_maxKey_and_maxHits_value", func(t *testing.T) {
+		setup()
+		defer teardown()
 
-	   		_, err := NewStorage(mock.Host(), mock.Port())
+		_, err := New(mock.Host(), mock.Port())
 
-	   		mock.CheckGet(t, maxKey, "")
-	   		mock.CheckGet(t, maxHits, "0")
-	   		assert.NoError(t, err)
-	   	})
+		mock.CheckGet(t, maxKey, "")
+		mock.CheckGet(t, maxHits, "0")
+		assert.NoError(t, err)
+	})
 
-	   	t.Run("should_be_ok", func(t *testing.T) {
-	   		setup()
-	   		defer teardown()
+	t.Run("should_be_ok", func(t *testing.T) {
+		setup()
+		defer teardown()
 
-	   		_, err := NewStorage(mock.Host(), mock.Port())
-	   		assert.NoError(t, err)
-	   	}) */
+		_, err := New(mock.Host(), mock.Port())
+		assert.NoError(t, err)
+	})
 }
 
 func Test_IncrementCount(t *testing.T) {
@@ -64,7 +64,7 @@ func Test_IncrementCount(t *testing.T) {
 		setup()
 		defer teardown()
 
-		c, _ := NewStorage(mock.Host(), mock.Port())
+		c, _ := New(mock.Host(), mock.Port())
 
 		mock.Incr("foo", 123)
 
@@ -87,7 +87,7 @@ func Test_IncrementCount(t *testing.T) {
 		mock.Incr("key1", 21)
 		mock.Incr("key2", 42)
 
-		c, _ := NewStorage(mock.Host(), mock.Port())
+		c, _ := New(mock.Host(), mock.Port())
 		mock.SetError("mock")
 
 		err := c.IncrementCount(ctx, "key2")
@@ -112,7 +112,7 @@ func Test_GetMaxEntries(t *testing.T) {
 		setup()
 		defer teardown()
 
-		c, _ := NewStorage(mock.Host(), mock.Port())
+		c, _ := New(mock.Host(), mock.Port())
 
 		mock.SetError("error")
 		_, _, err := c.GetMaxEntries(ctx)
@@ -126,7 +126,7 @@ func Test_GetMaxEntries(t *testing.T) {
 		mock.Incr("key1", 123)
 		mock.Incr("key2", 234)
 
-		c, _ := NewStorage(mock.Host(), mock.Port())
+		c, _ := New(mock.Host(), mock.Port())
 
 		c.IncrementCount(ctx, "key1")
 		c.IncrementCount(ctx, "key2")
@@ -144,7 +144,7 @@ func Test_Reset(t *testing.T) {
 		setup()
 		defer teardown()
 
-		c, _ := NewStorage(mock.Host(), mock.Port())
+		c, _ := New(mock.Host(), mock.Port())
 
 		mock.SetError("error")
 		err := c.Reset(ctx)
@@ -158,7 +158,7 @@ func Test_Reset(t *testing.T) {
 		mock.Incr("key1", 234)
 		mock.Incr("key2", 123)
 
-		c, _ := NewStorage(mock.Host(), mock.Port())
+		c, _ := New(mock.Host(), mock.Port())
 
 		err := c.Reset(ctx)
 		assert.NoError(t, err)

@@ -55,8 +55,14 @@ func TestHandler_GetFizzBuzz(t *testing.T) {
 }
 
 func handlerFizzBuzzCaseFailInvalidQueryParameter(mc *gomock.Controller) handlerCaseFizzBuzz {
+	ml := mock.NewMockLogger(mc)
+
+	ml.EXPECT().Error(gomock.Any())
+
 	return handlerCaseFizzBuzz{
-		h:           handler{},
+		h: handler{
+			log: ml,
+		},
 		queryString: `?int1="0"`,
 		status:      http.StatusBadRequest,
 	}
@@ -66,6 +72,7 @@ func handlerFizzBuzzCaseFailValidation(mc *gomock.Controller) handlerCaseFizzBuz
 	ml := mock.NewMockLogger(mc)
 
 	ml.EXPECT().Info(gomock.Any())
+	ml.EXPECT().Error(gomock.Any())
 
 	return handlerCaseFizzBuzz{
 		h: handler{
