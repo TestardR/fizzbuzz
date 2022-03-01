@@ -9,7 +9,7 @@ import (
 	"github.com/go-redis/redis/v8"
 )
 
-//go:generate mockgen -package=mock -source=redis.go -destination=$MOCK_FOLDER/redis.go Statser
+//go:generate mockgen -package=mock -source=redis.go -destination=$MOCK_FOLDER/redis.go Storager
 
 const (
 	maxKey  = "max_key"
