@@ -6,6 +6,8 @@ import (
 )
 
 type Fizzbuzz struct {
+	// TODO: add upper bound limit to avoid crashing service
+
 	Int1  int    `form:"int1" validate:"gt=0"`
 	Int2  int    `form:"int2" validate:"gt=0"`
 	Limit int    `form:"limit" validate:"gt=0"`
@@ -19,6 +21,7 @@ func (f Fizzbuzz) ToString() string {
 
 func (f Fizzbuzz) ComputeSequence() []string {
 	result := make([]string, 0, f.Limit)
+	// TODO: opitmize code, add memoization.
 
 	for i := 1; i <= f.Limit; i++ {
 		switch {

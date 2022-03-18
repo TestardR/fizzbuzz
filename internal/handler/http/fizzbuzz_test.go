@@ -25,6 +25,7 @@ func TestHandler_GetFizzBuzz(t *testing.T) {
 	t.Cleanup(func() { mc.Finish() })
 
 	tests := map[string]handlerCaseFizzBuzz{
+		// TODO: improve unit tests for query string parameters
 		"fail-invalid-query-parameter": handlerFizzBuzzCaseFailInvalidQueryParameter(mc),
 		"fail-validation":              handlerFizzBuzzCaseFailValidation(mc),
 		"fail-to-store-increment":      handlerFizzBuzzCaseFailStoreIncrement(mc),

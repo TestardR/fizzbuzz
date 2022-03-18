@@ -128,6 +128,8 @@ func (s *Storage) Reset(ctx context.Context) error {
 }
 
 func (s *Storage) setMaxEntries(ctx context.Context, keyValue string, hitsValue int) error {
+	// TODO: Redis transactions are not atomic, add rollback with tmp variables.
+
 	pipe := s.client.TxPipeline()
 	pipe.Set(ctx, maxKey, keyValue, 0)
 	pipe.Set(ctx, maxHits, hitsValue, 0)
